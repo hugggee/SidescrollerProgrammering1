@@ -11,11 +11,20 @@ public class CharacterController : MonoBehaviour
     }
 
 
-    public float MovementSpeedPerSecond = 10.0f;
+    public float MovementSpeedPerSecond = 10.0f; // gå
+    public float GravityPerSecond = 140.0f; // falla
+    public float GroundLevel = 0.0f; // grunden
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.W)) // up
+        // Gravitation
+        Vector3 gravityPosition = transform.position;
+        gravityPosition.y -= GravityPerSecond * Time.deltaTime;
+        if(gravityPosition.y < GroundLevel) { gravityPosition.y = GroundLevel; }
+        transform.position = gravityPosition;
+
+
+        if (Input.GetKey(KeyCode.W)) // up
         {
             Vector3 characterPosition = transform.position;
             characterPosition.y += MovementSpeedPerSecond * Time.deltaTime;
