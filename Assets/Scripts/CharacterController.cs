@@ -15,8 +15,6 @@ public class CharacterController : MonoBehaviour
 
     public CharacterState JumpingState = CharacterState.Airborne; // är karaktären på marken eller i luften?
 
-
-
     public float MovementSpeedPerSecond = 140.0f; // gå
     public float GravityPerSecond = 160.0f; // falla
     public float GroundLevel = 0.0f; // grunden
