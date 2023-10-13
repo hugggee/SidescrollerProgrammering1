@@ -15,10 +15,10 @@ public class CharacterController : MonoBehaviour
 
     public CharacterState JumpingState = CharacterState.Airborne; // är karaktären på marken eller i luften?
 
- 
 
-    public float MovementSpeedPerSecond = 120.0f; // gå
-    public float GravityPerSecond = 140.0f; // falla
+
+    public float MovementSpeedPerSecond = 140.0f; // gå
+    public float GravityPerSecond = 160.0f; // falla
     public float GroundLevel = 0.0f; // grunden
 
     //hoppa
@@ -51,7 +51,7 @@ public class CharacterController : MonoBehaviour
             characterPosition.y += totalJumpMovementThisFrame;
             transform.position = characterPosition;
             JumpHeightDelta += totalJumpMovementThisFrame;
-            if(JumpHeightDelta >= JumpMaxHeight)
+            if (JumpHeightDelta >= JumpMaxHeight)
             {
                 JumpingState = CharacterState.Airborne;
                 JumpHeightDelta = 0.0f;
