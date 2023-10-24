@@ -1,59 +1,70 @@
-using System.Runtime.InteropServices;
+using System.Collections;
+using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
-
 
 public class PhysicsCharacterController : MonoBehaviour
 {
-    public Rigidbody2D MinKropp = null;
-    public CharacterState JumpingState = CharacterState.Airborne; // är karaktären på marken eller i luften?
+    // referens till objektet
+    public Rigidbody2D minkropp = null;
 
-    public float MovementSpeedPerSecond = 140.0f; // gå
-    public float GravityPerSecond = 160.0f; // falla
+    public CharacterState JumpingState = CharacterState.Airborne;
 
-    //hoppa
-    public float JumpSpeedFactor = 3.0f; // Hur mycket snabbare hoppet är
-    public float JumpMaxHeight = 150;
-    private float JumpHeightDelta = 0.0f;
+    // gravitation
+    public float GravityPerSecond = 160.0f; // jag ramlar hjälpp
 
-    // Update is called once per frame
-    void FixedUpdate()
+
+    // hoppa
+    public float JumpSpeedFactor = 3.0f; // Hur snabbare är hoppet
+    public float JumpMaxHeight = 150.0f;
+    public float JumpHeightDelta = 0.0f;
+
+    // fart
+    public float MovementSpeedPerSecond = 10.0f; // farten
+
+
+
+
+
+    private void Update()
     {
-        Vector3 characterVelocity = MinKropp.velocity;
-        characterVelocity.x = 0.0f;
-        characterVelocity.y = 0.0f;
-        //up
-        if (Input.GetKey(KeyCode.W) && JumpingState == CharacterState.Grounded)
+        if (Input.GetKeyDown(KeyCode.W) && JumpingState == CharacterState.Grounded)
         {
             JumpingState = CharacterState.Jumping;
             JumpHeightDelta = 0.0f;
-
         }
+    }
+
+    void FixedUpdate()
+    {
+        Vector3 characterVelocity = minkropp.velocity;
+        characterVelocity.x = 0.0f;
+
         if (JumpingState == CharacterState.Jumping)
         {
-            float totalJumpMovementThisFrame = MovementSpeedPerSecond * JumpSpeedFactor;
-            characterVelocity.y += totalJumpMovementThisFrame;
-            JumpHeightDelta += totalJumpMovementThisFrame;
+            float jumpMovement = MovementSpeedPerSecond * JumpSpeedFactor;
+            characterVelocity.y = jumpMovement;
+
+            JumpHeightDelta += jumpMovement * Time.deltaTime;
+
             if (JumpHeightDelta >= JumpMaxHeight)
             {
                 JumpingState = CharacterState.Airborne;
-                JumpHeightDelta = 0.0f;
-                characterVelocity.y = 0.0f;
+
             }
         }
 
-
-        if (Input.GetKey(KeyCode.A)) // vänster
+        // vänster
+        if (Input.GetKey(KeyCode.A))
         {
-
             characterVelocity.x -= MovementSpeedPerSecond;
-            MinKropp.velocity = characterVelocity;
         }
-        if (Input.GetKey(KeyCode.D)) // höger
+        // höger    
+        if (Input.GetKey(KeyCode.D))
         {
-
             characterVelocity.x += MovementSpeedPerSecond;
-            MinKropp.velocity = characterVelocity;
         }
-        MinKropp.velocity = characterVelocity;
+        minkropp.velocity = characterVelocity;
+
     }
 }
